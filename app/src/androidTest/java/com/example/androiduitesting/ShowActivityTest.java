@@ -26,38 +26,53 @@ public class ShowActivityTest {
     public ActivityScenarioRule<ShowActivity> scenario = new ActivityScenarioRule<>(ShowActivity.class);
 
     @Test
-    public void testAddCity(){
+    public void testSwitchView(){
         onView(withId(R.id.button_add)).perform(click());
 
         onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
 
         onView(withId(R.id.button_confirm)).perform(click());
 
-        onView(withText("Edmonton")).check(matches(isDisplayed()));
+        // click first activiyt
+        onData(anything())
+                .inAdapterView(withId(R.id.city_list))
+                .atPosition(0)
+                .perform(click());
+
+        // check other view is displayed
+        onView(withId(R.id.button_back)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void testClearCity(){
+    public void testCityName(){
         onView(withId(R.id.button_add)).perform(click());
+
         onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
-        onView(withId(R.id.button_confirm)).perform(click());
 
-        onView(withId(R.id.button_add)).perform(click());
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Vancouver"));
         onView(withId(R.id.button_confirm)).perform(click());
+        onData(anything())
+                .inAdapterView(withId(R.id.city_list))
+                .atPosition(0)
+                .perform(click());
 
-        onView(withId(R.id.button_clear)).perform(click());
-        onView(withText("Edmonton")).check(doesNotExist());
-        onView(withText("Vancouver")).check(doesNotExist());
+        onView(withId(R.id.city_text)).check(matches(withText("Edmonton")));
     }
 
     @Test
-    public void testListView(){
+    public void testBack(){
         onView(withId(R.id.button_add)).perform(click());
-        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
-        onView(withId(R.id.button_confirm)).perform(click());
 
-        onData(is(instanceOf(String.class))).inAdapterView(
-                withId(R.id.city_list)).atPosition(0).check(matches((withText("Edmonton"))));
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+
+        onView(withId(R.id.button_confirm)).perform(click());
+        onData(anything())
+                .inAdapterView(withId(R.id.city_list))
+                .atPosition(0)
+                .perform(click());
+        // click back button
+        onView(withId(R.id.button_back)).perform(click());
+
+        // check we're back on the other page
+        onView(withId(R.id.button_add)).check(matches(isDisplayed()));
     }
 }

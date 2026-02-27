@@ -21,9 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityTest {
+public class ShowActivityTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<ShowActivity> scenario = new ActivityScenarioRule<>(ShowActivity.class);
 
     @Test
     public void testAddCity(){
